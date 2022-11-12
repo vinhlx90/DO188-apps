@@ -1,8 +1,9 @@
 FROM registry.redhat.io/ubi8/ubi
 
-COPY . /tmp/hello-server
+WORKDIR /tmp/hello-server
+COPY . .
 
 RUN dnf install -y nodejs
-RUN cd /tmp/hello-server && npm install
+RUN npm install
 
-CMD cd /tmp/hello-server && npm start
+CMD npm start
