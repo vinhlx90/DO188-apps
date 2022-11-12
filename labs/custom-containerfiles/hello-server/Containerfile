@@ -1,8 +1,10 @@
 FROM registry.redhat.io/ubi8/nodejs-16
 
-WORKDIR /tmp/hello-server
-COPY . .
+ENV SERVER_PORT=3000
+ENV NODE_ENV="production"
 
-RUN dnf install -y nodejs && npm install
+WORKDIR /tmp/hello-server
+
+COPY . .
 
 CMD npm start
