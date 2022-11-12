@@ -1,3 +1,15 @@
+#Lines that begin with a hash, or pound, sign (#) are comments.
+#FROM = instruction declares that the new container image extends the registry.redhat.io/ubi8/ubi:8.6ubi8/ubi:8.6 container base image.
+#LABEL = instruction is responsible for adding generic metadata to an image.
+#RUN = executes commands in a new layer on top of the current image. The shell that is used to execute commands is /bin/sh.
+#EXPOSE = indicates that the container listens on the specified network port at runtime. The EXPOSE instruction defines metadata only; it does not make ports accessible from the host.
+#ENV = is responsible for defining environment variables that are available in the container.
+#ADD = instruction copies files or folders from a local or remote source and adds them to the container’s file system.
+#COPY = copies files from the working directory and adds them to the container’s file system.
+#USER = specifies the username or the UID to use when running the container image for the RUN, CMD, and ENTRYPOINT instructions
+#ENTRYPOINT = specifies the default command to execute when the image runs in a container.
+#CMD = provides the default arguments for the ENTRYPOINT instruction.
+
 FROM registry.ocp4.example.com:8443/ubi8/python-38:1-96
 USER default
 WORKDIR /redhat
