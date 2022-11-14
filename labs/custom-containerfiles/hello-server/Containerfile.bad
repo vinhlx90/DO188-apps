@@ -1,0 +1,17 @@
+#This image create by Vinhlx
+FROM registry.redhat.io/ubi8/ubi
+
+LABEL author="vinhlx90"
+LABEL version="1.0"
+LABEL env="dev"
+
+WORKDIR /opt/app-root/src
+
+COPY . .
+
+ENV PORT 3000
+EXPOSE $PORT
+
+RUN dnf install -y nodejs && npm install
+
+CMD npm start
