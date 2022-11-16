@@ -1,9 +1,9 @@
-FROM registry.ocp4.example.com:8443/ubi9/ubi:9.0.0-1468
+FROM registry.ocp4.example.com:8443/ubi9/ubi:9.*
 
-ENV VERSION="1.16.8" \
+ENV VERSION="1.16.*" \
     GITEA_WORK_DIR=/var/lib/gitea/ \
     GITEA_BIN_DIR=/usr/local/bin/ \
-    GITEA_PORT="3030" \
+    GITEA_PORT="3333" \
     HOME="/opt/app-root"
 
 # Download and deploy Gitea binary
@@ -23,15 +23,15 @@ RUN mkdir -p /var/lib/gitea/{custom,data,log} && \
   chmod -R g=u /etc/gitea && \
   chmod -R g=u /opt/app-root && \
   useradd  \
-    --uid 1001 \
+    --uid 1111\
     --system \
     --gid 0 \
     --home-dir /opt/app-root \
     --shell /sbin/nologin \
     --comment "Default Application User" \
-    default
+    vice
 
-USER 1001
+USER 1111
 WORKDIR /opt/app-root
 EXPOSE ${GITEA_PORT}
 
