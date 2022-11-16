@@ -1,10 +1,10 @@
 #!/bin/env bash
-
+#This script used to backup and restor subuid, subgid for testing run rootless container
 orig_gid_file="/etc/subgid"
 orig_uid_file="/etc/subuid"
 bkp_gid_file="/tmp/subgid_bkp"
 bkp_uid_file="/tmp/subuid_bkp"
-non_root_user="${1:-student}"
+non_root_user="${1:-vice}" #need to change "student" to user on PC
 
 migrate_ids() {
     su - "${non_root_user}" sh -c "podman system migrate"
