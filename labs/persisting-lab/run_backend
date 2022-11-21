@@ -1,0 +1,2 @@
+#!/bin/bash
+podman run -d --name persisting-backend -e DB_HOST=persisting-db -p 8080:8080 --network persisting-net registry.ocp4.example.com:8443/redhattraining/podman-urlshortener-backend

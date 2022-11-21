@@ -1,0 +1,2 @@
+#!/bin/bash
+podman run -d --name persisting-frontend --network persisting-net -p 3000:8080 registry.ocp4.example.com:8443/redhattraining/podman-urlshortener-frontend

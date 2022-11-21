@@ -1,0 +1,2 @@
+#!/bin/bash
+podman run -d --name persisting-db --network persisting-net --env-file=env.pgsql -v postgres-vol:/var/lib/pgsql/data registry.ocp4.example.com:8443/rhel9/postgresql-13
