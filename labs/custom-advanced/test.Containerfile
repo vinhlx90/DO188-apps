@@ -14,7 +14,7 @@ RUN dnf install -y httpd && dnf clean all && \
     chmod -R g=u ${APP_SCRIPT} ${APP_LOG}
 
 #Test changing ARG value when run "podman build --build-arg CREATE_DATE=input-value" command  
-ENV CREATE_DATE=${CREATE_DATE}
+ENV CREATE_DATE=${CREATE_DATE:-202305}
 #ADD 
 
 COPY index.html ${APP_ROOT}
