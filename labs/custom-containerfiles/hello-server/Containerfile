@@ -1,0 +1,9 @@
+FROM ubi8
+
+WORKDIR /tmp/hello-server
+
+COPY . .
+
+RUN dnf install -y  nodejs && dnf clean all && \
+    npm install
+CMD npm start
