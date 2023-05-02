@@ -1,0 +1,24 @@
+FROM registry.ocp4.example.com:8443/redhattraining/podman-random-numbers as generator
+#This image only exit in redhat training env
+
+RUN python3 random_generator.py #This script exits in podman-random-numbers image
+#after run random_generator.py wil creat a file at path="/app/numbers.txt"
+
+FROM registry.ocp4.example.com:8443/ubi8/python-38:1-96
+#This image be used to ran application with "main.py" script 
+
+USER default
+#default user in python-38:1-96 is 1001 and ExposedPort is 8080
+
+WORKDIR /redhat
+#define that "/redhat" is app_root
+
+COPY --from=generator --chown=default /app/numbers.txt materials/numbers.txt
+#the "numbers.txt will be copy from previous generator container, it"
+
+COPY main.py .
+
+#The main.py will read and write data in file "numbers.txt" that input by ENV FILE="path to file"
+ENV FILE="/redhat/materials/numbers.txt"
+
+CMD python3 main.py
