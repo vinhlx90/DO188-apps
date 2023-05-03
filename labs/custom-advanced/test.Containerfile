@@ -9,7 +9,8 @@ ARG APP_CONFIG=/etc/httpd/conf/httpd.conf \
 ENV APP_ROOT=/var/www/html/ \
     APP_PORT=8080 \
     APP_USER=1001 \
-    CREATE_DATE=${CREATE_DATE:-202305} #if there is no ARG value then if set dafault value is "202305"
+    CREATE_DATE=${CREATE_DATE:-202305} 
+#if there is no ARG value then if set dafault value is "202305"
 
 RUN dnf install -y httpd && dnf clean all && \
     sed -i -e 's/^Listen 80/Listen ${APP_PORT}/' ${APP_CONFIG} && \
