@@ -163,3 +163,31 @@ ENTRYPOINT specifies the default command to execute when the image runs in a con
 	
 
 CMD provides the default arguments for the ENTRYPOINT instruction.
+====================
+
+podman-volume comand
+====================
+
+Description:
+  Imports contents into a podman volume from specified tarball (.tar, .tar.gz, .tgz, .bzip, .tar.xz, .txz).
+
+Usage:
+  podman volume import VOLUME [SOURCE]
+
+Examples:
+  podman volume import my_vol /home/user/import.tar
+  cat ctr.tar | podman import volume my_vol -
+-------------------
+podman volume export
+
+Allow content of volume to be exported into external tar.
+
+Usage:
+  podman volume export [options] VOLUME
+
+Options:
+  -o, --output string   Write to a specified file (default: stdout, which must be redirected) (default "/dev/stdout")
+Ex: 
+podman volume export persisting-volume > /tmp/persisting-volume.tar.gz
+#persisting-volume is podman volume
+#path_file=/tmp/, file will be archived and compressed in '.gz' type
