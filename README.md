@@ -191,3 +191,70 @@ Ex:
 podman volume export persisting-volume > /tmp/persisting-volume.tar.gz
 #persisting-volume is podman volume
 #path_file=/tmp/, file will be archived and compressed in '.gz' type
+
+
+==========================
+Container troubleshooting
+=========================
+1- Troubleshoot Container Networking
+=========================
+1.1 Incorrect port mapping
+"Ports inside container=Application port opens" == "Podman port mapping congfiguration"
+
+#check port podman mapping
+podman port CONTAINER
+#Check port inside container
+podman exec -it CONTAINER ss -pant
+#explain:
+    -p: display the process using the socket
+
+    -a: display listening and established connections
+
+    -n: display IP addresses
+
+    -t: display TCP sockets
+#in case of there is not ss command on Container then we can use nsenter to push ss commnad into container ad bellow:
+
+podman inspect CONTAINER -f "{{.State.Pid}}"
+
+sudo nsenter -n -t CONTAINER_PID ss -pant
+
+-------------------------------------
+1.2 Container netowrk connectivity issues
+#check podman network
+
+podman network ls
+podman network inspect NETWORK_Container --format='{{.Config.NetworkSettings.Networks}}'
+#ensure that :  "dns_enabled": true,
+
+#IN case of dns_enabled": fasle then need to delete the network and recreate network and check 'dns_enabled" info. If it still is "fasle" then check packages 'podman-plugins' and sure that it was installed on server.
+
+===================================
+2.Troubleshoot Bind Mount
+
+When you use bind mounts, you must configure file permissions and SELinux access manually. SELinux is an additional security mechanism used by Red Hat Enterprise Linux (RHEL) and other Linux distributions.
+
+#Consider the following bind mount example:
+========================================================================
+[user@host ~]$ podman run -p 8080:8080 --volume /www:/var/www/html \
+  registry.access.redhat.com/ubi8/httpd-24:latest
+[user@host ~]$ podman unshare ls -l /www/
+total 4
+-rw-rw-r--. 1 root root 21 Jul 12 15:21 index.html
+[user@host ~]$ podman unshare ls -ld /www/
+drwxrwxr-x. 1 root root 20 Jul 12 15:21 /www/
+=========================================================================
+The output shows the SELinux context label system_u:object_r:default_t:s0:c228,c359, which has the default_t type. A container must have the container_file_t SELinux type to have access to the bind mount. SELinux is out of scope for this course.
+
+To fix the SELinux configuration, add the :z or :Z option to the bind mount:
+
+    Lower case z lets different containers share access to a bind mount.
+
+    Upper case Z provides the container with exclusive access to the bind mount.
+=======================================================================
+[user@host ~]$ podman run -p 8080:8080 --volume /www:/var/www/html:Z \
+  registry.access.redhat.com/ubi8/httpd-24:latest
+[user@host ~]$ ls -Zd /www
+system_u:object_r:container_file_t:s0:c240,c717 /www
+=======================================================================
+
