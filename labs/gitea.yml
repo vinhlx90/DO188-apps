@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: gitea
+  name: gitea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitea
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: gitea
+    spec:
+      containers:
+      - image: registry.ocp4.example.com:8443/redhattraining/podman-gitea:latest
+        name: podman-gitea
+        ports:
+        - containerPort: 3030
+        resources: {}
+status: {}
