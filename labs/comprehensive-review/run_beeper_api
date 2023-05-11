@@ -1,0 +1,1 @@
+podman run -d --name beeper-api -e DB_HOST=beeper-db --net beeper-backend --net beeper-frontend beeper-api:v1

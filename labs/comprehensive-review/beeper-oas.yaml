@@ -1,0 +1,221 @@
+openapi: 3.0.2
+info:
+    title: beeper
+    version: 1.0.0
+    description: Get the latest news
+    termsOfService: 'https://www.redhat.com/en/about/terms-use'
+    contact:
+        name: GLS API Team
+        url: 'https://rol.redhat.com/'
+        email: gls@redhat.com
+    license:
+        name: Apache 2.0
+        url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+    -
+        url: 'http://{host}:{port}/api'
+        description: ''
+        variables:
+            host:
+                default: localhost
+            port:
+                default: '8080'
+paths:
+    /beep:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NewBeep'
+                required: true
+            responses:
+                '201':
+                    description: Beep created
+            operationId: create
+            summary: Create a beep
+    '/beep/{id}':
+        delete:
+            parameters:
+                -
+                    name: id
+                    description: ID of a beep to delete
+                    schema:
+                        format: int64
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '204':
+                    description: beep deleted
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                    description: unexpected error
+            operationId: deleteBeep
+            summary: Delete a beep
+            description: deletes a single beep based on the ID supplied
+        parameters:
+            -
+                name: id
+                description: Beep identifier
+                schema:
+                    type: integer
+                in: path
+                required: true
+    '/beep/{id}/upvote':
+        summary: Upvote a beep
+        put:
+            parameters:
+                -
+                    name: id
+                    description: Id of the beep
+                    schema:
+                        format: int64
+                        type: integer
+                    in: path
+                    required: true
+            responses:
+                '200':
+                    description: OK
+            operationId: beepUpvote
+            summary: Upvote a beep
+            description: Increments the vote value of a beep
+        parameters:
+            -
+                name: id
+                description: Id of the beep
+                schema:
+                    format: int64
+                    type: integer
+                in: path
+                required: true
+    /beeps:
+        get:
+            servers:
+                -
+                    url: 'http://{server}:{port}/api'
+                    description: ''
+                    variables:
+                        server:
+                            default: localhost
+                        port:
+                            default: '8080'
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Beep'
+                            examples:
+                                beeps_example:
+                                    value:
+                                        -
+                                            id: 86
+                                            username: alice
+                                            content: example text 1
+                                            votes: 1
+                                        -
+                                            id: 24
+                                            username: john
+                                            content: example text 2
+                                        -
+                                            id: 24
+                                            username: alice
+                                            content: example text 3
+                                            votes: 5
+                                        -
+                                            id: 24
+                                            username: john
+                                            content: example text 4
+                                            votes: 3
+                    description: 'latest beeps'
+                default:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                    description: unexpected error
+            operationId: getBeeps
+            summary: Get all beeps
+            description: |
+                Returns latest beeps sorted by date in descending order.
+    '/beep/{id}/downvote':
+        summary: Downvote a beep
+        put:
+            responses:
+                '200':
+                    description: OK
+            operationId: beepDownvote
+            description: Remove an upvote from the beep.
+        parameters:
+            -
+                name: id
+                description: Id of the beep
+                schema:
+                    format: int64
+                    type: integer
+                in: path
+                required: true
+components:
+    schemas:
+        Error:
+            required:
+                - code
+                - message
+            properties:
+                code:
+                    format: int32
+                    type: integer
+                message:
+                    type: string
+        Beep:
+            required:
+                - content
+                - username
+                - id
+                - votes
+            properties:
+                id:
+                    format: int64
+                    description: beep identifier
+                    type: integer
+                    readOnly: true
+                    example: '1'
+                username:
+                    description: username
+                    maxLength: 8
+                    minLength: 1
+                    type: string
+                content:
+                    description: beep content
+                    maxLength: 281
+                    minLength: 1
+                    type: string
+                votes:
+                    format: int32
+                    description: A count of the up votes a beep has received.
+                    type: integer
+            example:
+                id: 37
+                username: alice
+                content: This is a beep example
+                votes: 10
+        NewBeep:
+            description: ''
+            required:
+                - username
+                - content
+            type: object
+            properties:
+                username:
+                    description: ''
+                    type: string
+                content:
+                    description: ''
+                    type: string
+

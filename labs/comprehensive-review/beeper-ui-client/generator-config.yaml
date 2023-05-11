@@ -1,0 +1,10 @@
+---
+npmName: '@redhattraining/beeper-ui-client'
+npmRepository: http://nexus-common.apps.na410-stage.dev.nextcle.com/repository/npm-hosted/
+nullSafeAdditionalProps: true
+supportsES6: true
+withInterfaces: true
+withSeparateModelsAndApi: true
+apiPackage: api
+modelPackage: model
+# typescriptThreePlus: true

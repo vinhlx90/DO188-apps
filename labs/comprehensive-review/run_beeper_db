@@ -1,0 +1,3 @@
+#!/bin/bash
+
+podman run -d --name beeper-db --net beeper-backend --env-file pgsql.env -v beeper-data:/var/lib/pgsql/data registry.ocp4.example.com:8443/rhel9/postgresql-13:1

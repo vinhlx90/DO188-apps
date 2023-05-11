@@ -1,0 +1,1 @@
+podman run -d --name beeper-ui -p 8080:8080 --net beeper-frontend beeper-ui:v1
